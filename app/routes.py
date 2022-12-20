@@ -60,6 +60,8 @@ def populate_db():
     venues = [
         Venue(name='Madison Square Garden', location='New York'),
         Venue(name='Hollywood Bowl', location='Los Angeles'),
+        Venue(name='United Center', location='Chicago'),
+        Venue(name='Disney World', location='Miami'),
         Venue(name='United Center', location='Chicago')
     ]
     db.session.add_all(venues)
@@ -68,18 +70,18 @@ def populate_db():
     # events
     events = [
         Event(name=' Rolling Loud', venue_id=venues[0].id,
-              date=datetime.datetime.strptime("Sat, Oct 06 2018", "%a, %b %d %Y")),
+              date=datetime.datetime.strptime("Sat, Oct 06 2022", "%a, %b %d %Y")),
         Event(name='Lalapolloza', venue_id=venues[1].id,
-              date=datetime.datetime.strptime("Sat, Oct 06 2018", "%a, %b %d %Y")),
-        Event(name='VMA', venue_id=venues[2].id, date=datetime.datetime.strptime("Sat, Oct 06 2018", "%a, %b %d %Y")),
+              date=datetime.datetime.strptime("Mon, Apr 04 2022", "%a, %b %d %Y")),
+        Event(name='VMA', venue_id=venues[2].id, date=datetime.datetime.strptime("Sat, Oct 06 2022", "%a, %b %d %Y")),
         Event(name='BET awards', venue_id=venues[0].id,
-              date=datetime.datetime.strptime("Sat, Oct 06 2018", "%a, %b %d %Y")),
+              date=datetime.datetime.strptime("Fri, Jun 01 2022", "%a, %b %d %Y")),
         Event(name='Halftime Show', venue_id=venues[1].id,
-              date=datetime.datetime.strptime("Sat, Oct 06 2018", "%a, %b %d %Y")),
+              date=datetime.datetime.strptime("Sun, Jul 04 2022", "%a, %b %d %Y")),
         Event(name='Governors Ball', venue_id=venues[2].id,
-              date=datetime.datetime.strptime("Sat, Oct 06 2018", "%a, %b %d %Y")),
+              date=datetime.datetime.strptime("Sun, Jul 14 2022", "%a, %b %d %Y")),
         Event(name='Hip Hop Awards', venue_id=venues[0].id,
-              date=datetime.datetime.strptime("Sat, Oct 06 2018", "%a, %b %d %Y"))
+              date=datetime.datetime.strptime("Fri, Apr 20 2022", "%a, %b %d %Y"))
     ]
     db.session.add_all(events)
     db.session.commit()
@@ -88,7 +90,14 @@ def populate_db():
         ArtistToEvent(artist_id=artists[1].id, event_id=events[0].id),
         ArtistToEvent(artist_id=artists[2].id, event_id=events[1].id),
         ArtistToEvent(artist_id=artists[3].id, event_id=events[1].id),
-        ArtistToEvent(artist_id=artists[4].id, event_id=events[2].id)
+        ArtistToEvent(artist_id=artists[4].id, event_id=events[2].id),
+        ArtistToEvent(artist_id=artists[2].id, event_id=events[2].id),
+        ArtistToEvent(artist_id=artists[3].id, event_id=events[3].id),
+        ArtistToEvent(artist_id=artists[4].id, event_id=events[3].id),
+        ArtistToEvent(artist_id=artists[4].id, event_id=events[0].id),
+        ArtistToEvent(artist_id=artists[1].id, event_id=events[3].id),
+        ArtistToEvent(artist_id=artists[1].id, event_id=events[4].id)
+
     ]
     db.session.add_all(artist_to_events)
     db.session.commit()
