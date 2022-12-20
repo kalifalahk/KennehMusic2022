@@ -9,10 +9,16 @@
     </head>
     <body>
         <div>
-            Ithaca Music:
-            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('index') }}">Ithaca Music:</a>
             <a href="{{ url_for('artists') }}">Artists</a>
+            {% if current_user.is_anonymous %}
+            <a href="{{ url_for('login') }}">Login</a>
+            {% else %}
             <a href="{{ url_for('new_artist') }}">New Artists</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
+
+
 
 
         </div>
