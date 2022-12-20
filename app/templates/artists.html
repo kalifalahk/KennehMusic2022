@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 
-{% block content %}
-  <H1> {{"List of Ithaca Artist"  }}</H1>
-    <p1><a href="/artist">{{ artists[0]}}</a></p1>
-    <br>
-    <p1><a href="/artist">{{ artists[1]}}</a></p1>
-     <br>
-    <p1><a href="/artist">{{ artists[2]}}</a></p1>
 
+{% block content %}
+    {% if error is defined %}
+   <h1> The artist {{ error_artist }} already exists! </h1>
+{% endif %}
+  <H1> {{"List of Ithaca Artist"  }}</H1>
+    {% for artist in artists %}
+     <p><a href="{{ url_for('artist', name=artist.name) }}">{{ artist.name }}</a></p>
+     {% endfor %}
 {% endblock %}

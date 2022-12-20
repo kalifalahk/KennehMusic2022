@@ -3,14 +3,14 @@
 {% block content %}
 
 
-    <h1> {{ info["name"]  }}</h1>
-    <h2> {{ info["hometown"]  }}</h2>
-    <p> {{ info["description"]  }}</p>
+      <h2>{{ artist.name }}</h2>
+      <p>{{  "Hometown: " + artist.hometown  }}</p>
 
     <h3>Events:</h3>
     <ul>
-        {%  for event in info["events"] %}
-            <li>{{  event }}</li>
+        {% for ae in artist.artistToEvents %}
+         <li><b>{{ ae.event.name }}</b> at the <b>{{ ae.event.venue.name }}</b> on
+            <b>{{ae.event.date.strftime('%A, %b %d %Y')}}</b>
         {% endfor %}
      </ul>
 
