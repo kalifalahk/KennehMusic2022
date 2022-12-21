@@ -39,8 +39,8 @@ class Artist(db.Model):
 class Venue(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), index=True)
-    location = db.Column(db.String(120), index=True)
     events = db.relationship('Event', backref='venue', lazy='dynamic')
+    location = db.Column(db.String(120), index=True)
 
     def __repr__(self):
         return '<Venue {}>'.format(self.name)

@@ -3,7 +3,7 @@ import datetime
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from app import app, db
-from app.forms import LoginForm, ArtistForm, RegistrationForm
+from app.forms import LoginForm, ArtistForm, RegistrationForm, VenueForm, EventForm
 from app.models import Artist, Event, Venue, ArtistToEvent, User
 from werkzeug.urls import url_parse
 
@@ -87,14 +87,49 @@ def new_artist():
         return render_template('newartist.html', form=form)
 
 
+@app.route('/new_venue', methods=['GET', 'POST'])
+def new_venue():
+    form = VenueForm()
+    if form.validate_on_submit():
+        venue = Venue(name=form.name.data, location=form.address.data + "," + form.city.data + "," + form.state.data)
+        db.session.add(venue)
+        db.session.commit()
+        flash('New venue created!')
+        return redirect(url_for('index'))
+    return render_template('newvenue.html', form=form)
+
+
+@app.route('/new_event', methods=['GET', 'POST'])
+def new_event():
+    form = EventForm()
+    form.venue.choices = [v.name for v in Venue.query.all()]
+    form.artist.choices = [v.name for v in Artist.query.all()]
+    if form.validate_on_submit():
+        print(form.venue.data)
+        event = Event(name=form.name.data, date=form.date.data,
+                      venue_id=Venue.query.filter(Venue.name == form.venue.data).first().id)
+        db.session.add(event)
+        db.session.commit()
+        for artist in form.artist.data:
+            db_Artist = Artist.query.filter(Artist.name == artist).first()
+            if db_Artist is not None:
+                artistevent = ArtistToEvent(artist_id=db_Artist.id, event_id=event.id)
+                db.session.add(artistevent)
+                db.session.commit()
+
+        flash('New Event created!')
+        return redirect(url_for('index'))
+    return render_template('newevent.html', form=form)
+
+
 @app.route('/populate_db')
 def populate_db():
     artists = [
-        Artist(name='Chief Keef', hometown='Chicago'),
-        Artist(name='Lil Baby', hometown='Atlanta'),
-        Artist(name='Jay-Z', hometown='Brooklyn'),
-        Artist(name='Kay Flock', hometown='Bronx'),
-        Artist(name='Drake', hometown='Toronto')
+        Artist(name='Chief Keef', hometown='Chicago', description="Test"),
+        Artist(name='Lil Baby', hometown='Atlanta', description="Test"),
+        Artist(name='Jay-Z', hometown='Brooklyn', description="Test"),
+        Artist(name='Kay Flock', hometown='Bronx', description="Test"),
+        Artist(name='Drake', hometown='Toronto', description="Test")
     ]
     db.session.add_all(artists)
     db.session.commit()
