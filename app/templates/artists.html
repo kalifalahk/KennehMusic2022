@@ -1,12 +1,17 @@
-{% extends "base.html" %}
-
+{% extends 'bootstrap/base.html' %}
 
 {% block content %}
-    {% if error is defined %}
-   <h1> The artist {{ error_artist }} already exists! </h1>
-{% endif %}
-  <H1> {{"List of Ithaca Artist"  }}</H1>
-    {% for artist in artists %}
-     <p><a href="{{ url_for('artist', name=artist.name) }}">{{ artist.name }}</a></p>
-     {% endfor %}
+   <div class="container">
+      {% if error is defined %}
+         <div class="alert alert-danger" role="alert">
+            The artist {{ error_artist }} already exists!
+         </div>
+      {% endif %}
+      <h1 class="text-center">List of Ithaca Artists</h1>
+      <div class="list-group">
+         {% for artist in artists %}
+            <a href="{{ url_for('artist', name=artist.name) }}" class="list-group-item list-group-item-action">{{ artist.name }}</a>
+         {% endfor %}
+      </div>
+   </div>
 {% endblock %}
